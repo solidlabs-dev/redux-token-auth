@@ -45,14 +45,20 @@ var authHeaderKeys = [
     'expiry',
     'uid',
 ];
-exports.setAuthHeaders = function (headers) {
+exports.setAuthHeaders = function (Storage, headers) {
     authHeaderKeys.forEach(function (key) {
-        axios_1.default.defaults.headers.common[key] = headers[key];
+        Storage.getItem(key).then(function (fromStorage) {
+            var value = headers[key] || fromStorage;
+            axios_1.default.defaults.headers.common[key] = value;
+        });
     });
 };
 exports.persistAuthHeadersInDeviceStorage = function (Storage, headers) {
     authHeaderKeys.forEach(function (key) {
-        Storage.setItem(key, headers[key]);
+        Storage.getItem(key).then(function (fromStorage) {
+            var value = headers[key] || fromStorage;
+            Storage.setItem(key, value); // <--- Not really needed
+        });
     });
 };
 exports.deleteAuthHeaders = function () {
