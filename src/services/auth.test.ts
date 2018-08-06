@@ -10,6 +10,7 @@ import {
   setAuthHeaders,
 } from './auth'
 
+
 describe('auth service', () => {
   const headers: AuthHeaders = {
     'access-token': 'accessToken',
@@ -18,10 +19,13 @@ describe('auth service', () => {
     expiry: 'expiry',
     uid: 'uid',
   }
+  const Storage: DeviceStorage = {
+
+  }
 
   describe('setAuthHeaders', () => {
     it('sets the appropriate auth headers on the global axios config', () => {
-      setAuthHeaders(headers)
+      setAuthHeaders(Storage, headers)
       Object.keys(headers).forEach((key: string) => {
         expect(axios.defaults.headers.common[key]).toBe(headers[key])
       })
