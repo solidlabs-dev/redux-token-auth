@@ -1,4 +1,3 @@
-import { ComponentClass } from 'react'
 import {
   Dispatch,
   Store,
@@ -201,7 +200,8 @@ export interface GenerateRequireSignInWrapperConfig {
   readonly redirectPathIfNotSignedIn: string
 }
 
-export type RequireSignInWrapper = (PageComponent: ComponentClass) => ComponentClass
+export type AnyReactComponent = React.ComponentType<any>
+export type RequireSignInWrapper = (PageComponent: AnyReactComponent) => AnyReactComponent
 
 export interface DeviceStorage {
   readonly getItem: (key: string) => Promise<any>

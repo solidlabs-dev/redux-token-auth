@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { Component, ComponentClass } from 'react'
+import { Component } from 'react'
 import { connect } from 'react-redux'
 import {
   GenerateRequireSignInWrapperConfig,
   ReduxState,
   RequireSignInWrapper,
+  AnyReactComponent,
 } from './types'
 
 const generateRequireSignInWrapper = (
   { redirectPathIfNotSignedIn }: GenerateRequireSignInWrapperConfig
 ): RequireSignInWrapper => {
-  const requireSignInWrapper = (PageComponent: ComponentClass): ComponentClass => {
+  const requireSignInWrapper = (PageComponent: AnyReactComponent): AnyReactComponent => {
     interface WrapperProps {
       readonly hasVerificationBeenAttempted: boolean
       readonly isSignedIn: boolean
@@ -51,7 +52,7 @@ const generateRequireSignInWrapper = (
 
     return connect(
       mapStateToProps,
-    )(GatedPage) as any
+    )(GatedPage)
   }
 
   return requireSignInWrapper
