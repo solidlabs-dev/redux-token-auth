@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { ComponentClass } from 'react'
+import { Component, ComponentClass } from 'react'
 import { connect } from 'react-redux'
 import {
   GenerateRequireSignInWrapperConfig,
@@ -19,7 +19,7 @@ const generateRequireSignInWrapper = (
       }
     }
 
-    class GatedPage extends React.Component<WrapperProps> {
+    class GatedPage extends Component<WrapperProps, {}> {
       public componentWillReceiveProps(nextProps: WrapperProps): void {
         const {
           history,
@@ -31,7 +31,7 @@ const generateRequireSignInWrapper = (
         }
       }
 
-      public render (): JSX.Element {
+      public render(): JSX.Element {
         const {
           hasVerificationBeenAttempted,
           isSignedIn,
@@ -51,7 +51,7 @@ const generateRequireSignInWrapper = (
 
     return connect(
       mapStateToProps,
-    )(GatedPage)
+    )(GatedPage) as any
   }
 
   return requireSignInWrapper
