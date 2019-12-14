@@ -2,7 +2,6 @@ import axios from 'axios'
 import {
   Dispatch,
   Store,
-  Action,
 } from 'redux'
 import {
   AuthResponse,
@@ -133,7 +132,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
 
   const registerUser = (
     userRegistrationDetails: UserRegistrationDetails,
-  ) => async function (dispatch: Dispatch<Action>): Promise<void> {
+  ) => async function (dispatch: Dispatch): Promise<void> {
     dispatch(registrationRequestSent())
     const {
       email,
@@ -167,7 +166,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
 
   const verifyToken = (
     verificationParams: VerificationParams,
-  ) => async function (dispatch: Dispatch<Action>): Promise<void> {
+  ) => async function (dispatch: Dispatch): Promise<void> {
     dispatch(verifyTokenRequestSent())
     try {
       const response = await axios({
@@ -186,7 +185,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
 
   const signInUser = (
     userSignInCredentials: UserSignInCredentials,
-  ) => async function (dispatch: Dispatch<Action>): Promise<void> {
+  ) => async function (dispatch: Dispatch): Promise<void> {
     dispatch(signInRequestSent())
     const {
       email,
@@ -211,7 +210,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
     }
   }
 
-  const signOutUser = () => async function (dispatch: Dispatch<Action>): Promise<void> {
+  const signOutUser = () => async function (dispatch: Dispatch): Promise<void> {
     const userSignOutCredentials: UserSignOutCredentials = {
       'access-token': await Storage.getItem('access-token') as string,
       client: await Storage.getItem('client') as string,

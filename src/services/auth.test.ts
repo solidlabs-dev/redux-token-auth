@@ -3,12 +3,16 @@ import {
   AuthHeaders,
   AuthResponse,
   SingleLayerStringMap,
+  DeviceStorage,
 } from '../types'
 import {
   deleteAuthHeaders,
   getUserAttributesFromResponse,
+  persistAuthHeadersInDeviceStorage,
   setAuthHeaders,
 } from './auth'
+
+import AsyncLocalStorage from "../AsyncLocalStorage";
 
 describe('auth service', () => {
   const headers: AuthHeaders = {
@@ -19,14 +23,19 @@ describe('auth service', () => {
     uid: 'uid',
   }
 
-  describe('setAuthHeaders', () => {
-    it('sets the appropriate auth headers on the global axios config', () => {
-      setAuthHeaders(headers)
-      Object.keys(headers).forEach((key: string) => {
-        expect(axios.defaults.headers.common[key]).toBe(headers[key])
-      })
-    })
-  })
+  describe("persistAndSetAuthHeaders", () => {
+    it("sets the appropriate auth headers on the global axios config", () => {
+      const Storage: DeviceStorage = AsyncLocalStorage;
+      persistAuthHeadersInDeviceStorage(Storage, headers);
+      // Timer to allow async set to happen
+      setTimeout(() => {
+        setAuthHeaders(Storage, headers);
+        Object.keys(headers).forEach((key: string) => {
+          expect(axios.defaults.headers.common[key]).toBe(headers[key]);
+        });
+      }, 1000);
+    });
+  });
 
   describe('deleteAuthHeaders', () => {
     it('deletes the appropriate auth headers from the global axios config', () => {

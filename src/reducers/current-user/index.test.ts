@@ -203,10 +203,6 @@ describe('currentUser', () => {
   describe('SET_HAS_VERIFICATION_BEEN_ATTEMPTED', () => {
     it('sets hasVerificationBeenAttempted', () => {
       const action: SetHasVerificationBeenAttemptedAction = setHasVerificationBeenAttempted(true)
-      const initialState: User = {
-        ...alreadyLoadingState,
-        hasVerificationBeenAttempted: false,
-      }
       const newState: User = currentUser(alreadyLoadingState, action)
       expect(newState.hasVerificationBeenAttempted).toBe(true)
     })

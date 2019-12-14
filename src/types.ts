@@ -2,7 +2,6 @@ import { ComponentClass } from 'react'
 import {
   Dispatch,
   Store,
-  Action,
 } from 'redux'
 
 export interface UserAttributes {
@@ -172,15 +171,15 @@ export type ReduxAction = RegistrationRequestSentAction
   | VerifyTokenRequestSentAction
   | VerifyTokenRequestSucceededAction
   | VerifyTokenRequestFailedAction
-  | SignInRequestSentAction
   | SignInRequestSucceededAction
+  | SignInRequestSentAction
   | SignInRequestFailedAction
   | SignOutRequestSentAction
   | SignOutRequestSucceededAction
   | SignOutRequestFailedAction
   | SetHasVerificationBeenAttemptedAction
 
-export type ReduxAsyncAction = (input?: any) => (dispatch: Dispatch<Action>) => Promise<void>
+export type ReduxAsyncAction = (input?: any) => (dispatch: Dispatch) => Promise<void>
 
 export type VerifyCredentialsFunction = (store: Store<{}>) => void
 

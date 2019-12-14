@@ -1,6 +1,6 @@
 {
   "name": "redux-token-auth",
-  "version": "0.20.1",
+  "version": "0.20.2",
   "description": "Redux actions and reducers to integrate with Devise Token Auth",
   "main": "dist/index.js",
   "types": "index.d.ts",
@@ -24,6 +24,9 @@
       "js",
       "jsx",
       "json"
+    ],
+    "setupFiles": [
+      "jest-localstorage-mock"
     ]
   },
   "keywords": [
@@ -41,6 +44,7 @@
     "@types/jest": "^24.0.23",
     "codecov": "^3.6.1",
     "jest": "^24.9.0",
+    "jest-localstorage-mock": "^2.4.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.3"
   },
