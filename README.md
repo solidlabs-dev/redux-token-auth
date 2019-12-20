@@ -85,6 +85,7 @@ Now we'll be adding that URL to a config object that has three keys:
 1. `authUrl`
 2. `userAttributes`
 3. `userRegistrationAttributes`
+4. `userSignInAttributes`
 
 #### User and User Registration Attributes
 

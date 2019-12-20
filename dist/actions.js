@@ -98,7 +98,7 @@ exports.setHasVerificationBeenAttempted = function (hasVerificationBeenAttempted
 // Async Redux Thunk actions:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var generateAuthActions = function (config) {
-    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes;
+    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes, userSignInAttributes = config.userSignInAttributes;
     var Storage = Boolean(storage.flushGetRequests) ? storage : AsyncLocalStorage_1.default;
     var registerUser = function (userRegistrationDetails) { return function (dispatch) {
         return __awaiter(this, void 0, void 0, function () {
@@ -174,22 +174,27 @@ var generateAuthActions = function (config) {
     }; };
     var signInUser = function (userSignInCredentials) { return function (dispatch) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, response, userAttributesToSave, error_3;
+            var email, password, data, response, userAttributesToSave, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         dispatch(exports.signInRequestSent());
                         email = userSignInCredentials.email, password = userSignInCredentials.password;
+                        data = {
+                            email: email,
+                            password: password,
+                        };
+                        Object.keys(userSignInAttributes).forEach(function (key) {
+                            var backendKey = userSignInAttributes[key];
+                            data[backendKey] = userSignInCredentials[key];
+                        });
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, axios_1.default({
                                 method: 'POST',
                                 url: authUrl + "/sign_in",
-                                data: {
-                                    email: email,
-                                    password: password,
-                                },
+                                data: data,
                             })];
                     case 2:
                         response = _a.sent();
