@@ -126,7 +126,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
     storage,
     userAttributes,
     userRegistrationAttributes,
-    userSignInAttributes,
+    userSignInAttributes = {},
   } = config
 
   const Storage: DeviceStorage = Boolean(storage.flushGetRequests) ? storage : AsyncLocalStorage

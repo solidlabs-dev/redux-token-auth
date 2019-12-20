@@ -98,7 +98,7 @@ exports.setHasVerificationBeenAttempted = function (hasVerificationBeenAttempted
 // Async Redux Thunk actions:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var generateAuthActions = function (config) {
-    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes, userSignInAttributes = config.userSignInAttributes;
+    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes, _a = config.userSignInAttributes, userSignInAttributes = _a === void 0 ? {} : _a;
     var Storage = Boolean(storage.flushGetRequests) ? storage : AsyncLocalStorage_1.default;
     var registerUser = function (userRegistrationDetails) { return function (dispatch) {
         return __awaiter(this, void 0, void 0, function () {
