@@ -224,18 +224,9 @@ describe('currentUser', () => {
 
   describe('UPDATE_REQUEST_SUCCEEDED', () => {
     it('sets the current user and indicates that it is no longer loading and is logged in', () => {
-      const newUserAttributes: UserAttributes = {
-        firstName: 'Rick',
-      }
-      const action: UpdateRequestSucceededAction = updateRequestSucceeded(newUserAttributes)
+      const action: UpdateRequestSucceededAction = updateRequestSucceeded()
       const newState: User = currentUser(alreadyLoadingState, action)
-      const expectedNewState: User = {
-        attributes: newUserAttributes,
-        isLoading: false,
-        isSignedIn: true,
-        hasVerificationBeenAttempted: false,
-      }
-      expect(newState).toEqual(expectedNewState)
+      expect(newState.isLoading).toBe(false)
     })
   })
 

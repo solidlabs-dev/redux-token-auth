@@ -27,7 +27,6 @@ var currentUser = function (state, action) {
             return __assign(__assign({}, state), { attributes: __assign({}, action.payload.userAttributes), isLoading: false, isSignedIn: true, hasVerificationBeenAttempted: true });
         case types_1.REGISTRATION_REQUEST_SUCCEEDED:
         case types_1.SIGNIN_REQUEST_SUCCEEDED:
-        case types_1.UPDATE_REQUEST_SUCCEEDED:
             return __assign(__assign({}, state), { attributes: __assign({}, action.payload.userAttributes), isLoading: false, isSignedIn: true });
         case types_1.VERIFY_TOKEN_REQUEST_FAILED:
             return __assign(__assign({}, state), { isLoading: false, isSignedIn: false, hasVerificationBeenAttempted: true });
@@ -46,6 +45,8 @@ var currentUser = function (state, action) {
             return __assign(__assign({}, state), { isLoading: false });
         case types_1.SET_HAS_VERIFICATION_BEEN_ATTEMPTED:
             return __assign(__assign({}, state), { hasVerificationBeenAttempted: action.payload.hasVerificationBeenAttempted });
+        case types_1.UPDATE_REQUEST_SUCCEEDED:
+            return __assign(__assign({}, state), { isLoading: false });
         default:
             return state;
     }

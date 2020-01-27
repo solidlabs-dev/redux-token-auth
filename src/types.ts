@@ -185,9 +185,6 @@ export interface UpdateRequestSentAction {
 
 export interface UpdateRequestSucceededAction {
   readonly type: UPDATE_REQUEST_SUCCEEDED
-  readonly payload: {
-    readonly userAttributes: UserAttributes
-  }
 }
 
 export interface UpdateRequestFailedAction {

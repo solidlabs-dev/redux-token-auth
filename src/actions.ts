@@ -128,11 +128,8 @@ export const updateRequestSent = (): UpdateRequestSentAction => ({
   type: UPDATE_REQUEST_SENT,
 })
 
-export const updateRequestSucceeded = (userAttributes: UserAttributes): UpdateRequestSucceededAction => ({
-  type: UPDATE_REQUEST_SUCCEEDED,
-  payload: {
-    userAttributes,
-  },
+export const updateRequestSucceeded = (): UpdateRequestSucceededAction => ({
+  type: UPDATE_REQUEST_SUCCEEDED
 })
 
 export const updateRequestFailed = (): UpdateRequestFailedAction => ({
@@ -292,15 +289,12 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
       data[backendKey] = userUpdateDetails[key]
     })
     try {
-      const response: AuthResponse = await axios({
+      await axios({
         method: 'PUT',
         url: authUrl,
         data,
       })
-      setAuthHeaders(Storage, response.headers)
-      persistAuthHeadersInDeviceStorage(Storage, response.headers)
-      const userAttributesToSave = getUserAttributesFromResponse(userAttributes, response)
-      dispatch(updateRequestSucceeded(userAttributesToSave))
+      dispatch(updateRequestSucceeded())
     } catch (error) {
       dispatch(updateRequestFailed())
       throw error

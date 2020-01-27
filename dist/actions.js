@@ -97,11 +97,8 @@ exports.setHasVerificationBeenAttempted = function (hasVerificationBeenAttempted
 exports.updateRequestSent = function () { return ({
     type: types_1.UPDATE_REQUEST_SENT,
 }); };
-exports.updateRequestSucceeded = function (userAttributes) { return ({
-    type: types_1.UPDATE_REQUEST_SUCCEEDED,
-    payload: {
-        userAttributes: userAttributes,
-    },
+exports.updateRequestSucceeded = function () { return ({
+    type: types_1.UPDATE_REQUEST_SUCCEEDED
 }); };
 exports.updateRequestFailed = function () { return ({
     type: types_1.UPDATE_REQUEST_FAILED,
@@ -296,7 +293,7 @@ var generateAuthActions = function (config) {
     }); };
     var updateUser = function (userUpdateDetails) { return function (dispatch) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, password, data, response, userAttributesToSave, error_5;
+            var email, password, data, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -319,11 +316,8 @@ var generateAuthActions = function (config) {
                                 data: data,
                             })];
                     case 2:
-                        response = _a.sent();
-                        auth_1.setAuthHeaders(Storage, response.headers);
-                        auth_1.persistAuthHeadersInDeviceStorage(Storage, response.headers);
-                        userAttributesToSave = auth_1.getUserAttributesFromResponse(userAttributes, response);
-                        dispatch(exports.updateRequestSucceeded(userAttributesToSave));
+                        _a.sent();
+                        dispatch(exports.updateRequestSucceeded());
                         return [3 /*break*/, 4];
                     case 3:
                         error_5 = _a.sent();
