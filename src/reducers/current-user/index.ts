@@ -46,6 +46,7 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
       }
     case REGISTRATION_REQUEST_SUCCEEDED:
     case SIGNIN_REQUEST_SUCCEEDED:
+    case UPDATE_REQUEST_SUCCEEDED:
       return {
         ...state,
         attributes: { ...action.payload.userAttributes },
@@ -95,11 +96,6 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
       }
     case UPDATE_REQUEST_FAILED:
       return state;
-    case UPDATE_REQUEST_SUCCEEDED:
-      return {
-        ...state,
-        isLoading: false,
-      }
     default:
       return state
   }

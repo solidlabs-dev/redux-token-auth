@@ -224,9 +224,18 @@ describe('currentUser', () => {
 
   describe('UPDATE_REQUEST_SUCCEEDED', () => {
     it('sets the current user and indicates that it is no longer loading and is logged in', () => {
-      const action: UpdateRequestSucceededAction = updateRequestSucceeded()
+      const newUserAttributes: UserAttributes = {
+        firstName: 'Rick',
+      }
+      const action: UpdateRequestSucceededAction = updateRequestSucceeded(newUserAttributes)
       const newState: User = currentUser(alreadyLoadingState, action)
-      expect(newState.isLoading).toBe(false)
+      const expectedNewState: User = {
+        attributes: newUserAttributes,
+        isLoading: false,
+        isSignedIn: true,
+        hasVerificationBeenAttempted: false,
+      }
+      expect(newState).toEqual(expectedNewState)
     })
   })
 
@@ -234,7 +243,7 @@ describe('currentUser', () => {
     it('indicates that the current user is no longer loading', () => {
       const action: UpdateRequestFailedAction = updateRequestFailed()
       const newState: User = currentUser(alreadyLoadingState, action)
-      expect(newState.isLoading).toBe(false)
+      expect(newState.isLoading).toBe(true)
     })
   })
 })
