@@ -297,6 +297,8 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
         url: authUrl,
         data,
       })
+      setAuthHeaders(Storage, response.headers)
+      persistAuthHeadersInDeviceStorage(Storage, response.headers)
       const userAttributesToSave = getUserAttributesFromResponse(userAttributes, response)
       dispatch(updateRequestSucceeded(userAttributesToSave))
     } catch (error) {
