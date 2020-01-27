@@ -1,6 +1,6 @@
 {
   "name": "redux-token-auth",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "Redux actions and reducers to integrate with Devise Token Auth",
   "main": "dist/index.js",
   "types": "index.d.ts",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kylecorbelli/redux-token-auth.git"
+    "url": "https://github.com/solidlabs-dev/redux-token-auth.git"
   },
   "jest": {
     "transform": {

@@ -15,6 +15,9 @@ import {
   SIGNOUT_REQUEST_SUCCEEDED,
   SIGNOUT_REQUEST_FAILED,
   SET_HAS_VERIFICATION_BEEN_ATTEMPTED,
+  UPDATE_REQUEST_SENT,
+  UPDATE_REQUEST_SUCCEEDED,
+  UPDATE_REQUEST_FAILED,
 } from '../../types'
 import initialState from '../../initial-state'
 
@@ -28,6 +31,7 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
     case VERIFY_TOKEN_REQUEST_SENT:
     case SIGNIN_REQUEST_SENT:
     case SIGNOUT_REQUEST_SENT:
+    case UPDATE_REQUEST_SENT:
       return {
         ...state,
         isLoading: true,
@@ -42,6 +46,7 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
       }
     case REGISTRATION_REQUEST_SUCCEEDED:
     case SIGNIN_REQUEST_SUCCEEDED:
+    case UPDATE_REQUEST_SUCCEEDED:
       return {
         ...state,
         attributes: { ...action.payload.userAttributes },
@@ -57,6 +62,7 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
       }
     case REGISTRATION_REQUEST_FAILED:
     case SIGNIN_REQUEST_FAILED:
+    case UPDATE_REQUEST_FAILED:
       return {
         ...state,
         isLoading: false,

@@ -14,6 +14,7 @@ Given a Rails backend using Devise Token Auth, this module provides several asyn
 - Sign in a user (`signInUser`).
 - Sign out a user (`signOutUser`).
 - Verify the current user’s auth token (`verifyToken`).
+- Update user details (`updateUser`).
 
 It also provides the corresponding Redux reducer to handle these actions.
 
@@ -86,6 +87,7 @@ Now we'll be adding that URL to a config object that has three keys:
 2. `userAttributes`
 3. `userRegistrationAttributes`
 4. `userSignInAttributes`
+5. `userUpdateAttributes`
 
 #### User and User Registration Attributes
 

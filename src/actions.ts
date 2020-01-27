@@ -11,6 +11,7 @@ import {
   UserRegistrationDetails,
   UserSignInCredentials,
   UserSignOutCredentials,
+  UserUpdateDetails,
   ActionsExport,
   REGISTRATION_REQUEST_SENT,
   REGISTRATION_REQUEST_SUCCEEDED,
@@ -25,6 +26,9 @@ import {
   SIGNOUT_REQUEST_SUCCEEDED,
   SIGNOUT_REQUEST_FAILED,
   SET_HAS_VERIFICATION_BEEN_ATTEMPTED,
+  UPDATE_REQUEST_SENT,
+  UPDATE_REQUEST_SUCCEEDED,
+  UPDATE_REQUEST_FAILED,
   RegistrationRequestSentAction,
   RegistrationRequestSucceededAction,
   RegistrationRequestFailedAction,
@@ -38,6 +42,9 @@ import {
   SignOutRequestSucceededAction,
   SignOutRequestFailedAction,
   SetHasVerificationBeenAttemptedAction,
+  UpdateRequestSentAction,
+  UpdateRequestSucceededAction,
+  UpdateRequestFailedAction,
 } from './types'
 import AsyncLocalStorage from './AsyncLocalStorage'
 import {
@@ -117,6 +124,22 @@ export const setHasVerificationBeenAttempted = (
   },
 })
 
+export const updateRequestSent = (): UpdateRequestSentAction => ({
+  type: UPDATE_REQUEST_SENT,
+})
+
+export const updateRequestSucceeded = (userAttributes: UserAttributes): UpdateRequestSucceededAction => ({
+  type: UPDATE_REQUEST_SUCCEEDED,
+  payload: {
+    userAttributes,
+  },
+})
+
+export const updateRequestFailed = (): UpdateRequestFailedAction => ({
+  type: UPDATE_REQUEST_FAILED,
+})
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Async Redux Thunk actions:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -127,6 +150,7 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
     userAttributes,
     userRegistrationAttributes,
     userSignInAttributes = {},
+    userUpdateAttributes = {},
   } = config
 
   const Storage: DeviceStorage = Boolean(storage.flushGetRequests) ? storage : AsyncLocalStorage
@@ -251,12 +275,45 @@ const generateAuthActions = (config: { [key: string]: any }): ActionsExport => {
     }
   }
 
+  const updateUser = (
+    userUpdateDetails: UserUpdateDetails,
+  ) => async function (dispatch: Dispatch): Promise<void> {
+    dispatch(updateRequestSent())
+    const {
+      email,
+      password,
+    } = userUpdateDetails
+    const data = {
+      email,
+      password,
+    }
+    Object.keys(userUpdateAttributes).forEach((key: string) => {
+      const backendKey = userUpdateAttributes[key]
+      data[backendKey] = userUpdateDetails[key]
+    })
+    try {
+      const response: AuthResponse = await axios({
+        method: 'PUT',
+        url: authUrl,
+        data,
+      })
+      setAuthHeaders(Storage, response.headers)
+      persistAuthHeadersInDeviceStorage(Storage, response.headers)
+      const userAttributesToSave = getUserAttributesFromResponse(userAttributes, response)
+      dispatch(updateRequestSucceeded(userAttributesToSave))
+    } catch (error) {
+      dispatch(updateRequestFailed())
+      throw error
+    }
+  }
+
   return {
     registerUser,
     verifyToken,
     signInUser,
     signOutUser,
     verifyCredentials,
+    updateUser,
   }
 }
 export default generateAuthActions

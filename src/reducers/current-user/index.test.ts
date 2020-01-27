@@ -15,6 +15,9 @@ import {
   User,
   UserAttributes,
   SetHasVerificationBeenAttemptedAction,
+  UpdateRequestSentAction,
+  UpdateRequestSucceededAction,
+  UpdateRequestFailedAction,
 } from '../../types'
 import {
   registrationRequestSent,
@@ -30,6 +33,9 @@ import {
   signOutRequestSucceeded,
   signOutRequestFailed,
   setHasVerificationBeenAttempted,
+  updateRequestSent,
+  updateRequestSucceeded,
+  updateRequestFailed,
 } from '../../actions'
 
 describe('currentUser', () => {
@@ -205,6 +211,39 @@ describe('currentUser', () => {
       const action: SetHasVerificationBeenAttemptedAction = setHasVerificationBeenAttempted(true)
       const newState: User = currentUser(alreadyLoadingState, action)
       expect(newState.hasVerificationBeenAttempted).toBe(true)
+    })
+  })
+
+  describe('UPDATE_REQUEST_SENT', () => {
+    it('indicates that the current user is loading', () => {
+      const action: UpdateRequestSentAction = updateRequestSent()
+      const newState: User = currentUser(undefined, action)
+      expect(newState.isLoading).toBe(true)
+    })
+  })
+
+  describe('UPDATE_REQUEST_SUCCEEDED', () => {
+    it('sets the current user and indicates that it is no longer loading and is logged in', () => {
+      const newUserAttributes: UserAttributes = {
+        firstName: 'Rick',
+      }
+      const action: UpdateRequestSucceededAction = updateRequestSucceeded(newUserAttributes)
+      const newState: User = currentUser(alreadyLoadingState, action)
+      const expectedNewState: User = {
+        attributes: newUserAttributes,
+        isLoading: false,
+        isSignedIn: true,
+        hasVerificationBeenAttempted: false,
+      }
+      expect(newState).toEqual(expectedNewState)
+    })
+  })
+
+  describe('UPDATE_REQUEST_FAILED', () => {
+    it('indicates that the current user is no longer loading', () => {
+      const action: UpdateRequestFailedAction = updateRequestFailed()
+      const newState: User = currentUser(alreadyLoadingState, action)
+      expect(newState.isLoading).toBe(false)
     })
   })
 })

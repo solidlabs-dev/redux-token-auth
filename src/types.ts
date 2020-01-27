@@ -82,6 +82,15 @@ export const SIGNOUT_REQUEST_FAILED: SIGNOUT_REQUEST_FAILED = 'redux-token-auth/
 export type SET_HAS_VERIFICATION_BEEN_ATTEMPTED = 'redux-token-auth/SET_HAS_VERIFICATION_BEEN_ATTEMPTED'
 export const SET_HAS_VERIFICATION_BEEN_ATTEMPTED: SET_HAS_VERIFICATION_BEEN_ATTEMPTED = 'redux-token-auth/SET_HAS_VERIFICATION_BEEN_ATTEMPTED'
 
+export type UPDATE_REQUEST_SENT = 'redux-token-auth/UPDATE_REQUEST_SENT'
+export const UPDATE_REQUEST_SENT: UPDATE_REQUEST_SENT = 'redux-token-auth/UPDATE_REQUEST_SENT'
+
+export type UPDATE_REQUEST_SUCCEEDED = 'redux-token-auth/UPDATE_REQUEST_SUCCEEDED'
+export const UPDATE_REQUEST_SUCCEEDED: UPDATE_REQUEST_SUCCEEDED = 'redux-token-auth/UPDATE_REQUEST_SUCCEEDED'
+
+export type UPDATE_REQUEST_FAILED = 'redux-token-auth/UPDATE_REQUEST_FAILED'
+export const UPDATE_REQUEST_FAILED: UPDATE_REQUEST_FAILED = 'redux-token-auth/UPDATE_REQUEST_FAILED'
+
 export interface UserRegistrationDetails {
   readonly email: string
   readonly password: string
@@ -98,6 +107,12 @@ export interface UserSignOutCredentials {
   readonly 'access-token': string
   readonly client: string
   readonly uid: string
+}
+
+export interface UserUpdateDetails {
+  readonly email: string
+  readonly password: string
+  readonly [key: string]: any
 }
 
 export interface RegistrationRequestSentAction {
@@ -164,6 +179,21 @@ export interface SetHasVerificationBeenAttemptedAction {
   }
 }
 
+export interface UpdateRequestSentAction {
+  readonly type: UPDATE_REQUEST_SENT
+}
+
+export interface UpdateRequestSucceededAction {
+  readonly type: UPDATE_REQUEST_SUCCEEDED
+  readonly payload: {
+    readonly userAttributes: UserAttributes
+  }
+}
+
+export interface UpdateRequestFailedAction {
+  readonly type: UPDATE_REQUEST_FAILED
+}
+
 export type ReduxAction = RegistrationRequestSentAction
   | RegistrationRequestSucceededAction
   | RegistrationRequestFailedAction
@@ -177,6 +207,9 @@ export type ReduxAction = RegistrationRequestSentAction
   | SignOutRequestSucceededAction
   | SignOutRequestFailedAction
   | SetHasVerificationBeenAttemptedAction
+  | UpdateRequestSentAction
+  | UpdateRequestSucceededAction
+  | UpdateRequestFailedAction
 
 export type ReduxAsyncAction = (input?: any) => (dispatch: Dispatch) => Promise<void>
 
@@ -188,6 +221,7 @@ export interface ActionsExport {
   readonly signInUser: ReduxAsyncAction
   readonly signOutUser: ReduxAsyncAction
   readonly verifyCredentials: VerifyCredentialsFunction
+  readonly updateUser: ReduxAsyncAction
 }
 
 export type ActionsGeneratorExport = (config: { [key: string]: any }) => ActionsExport

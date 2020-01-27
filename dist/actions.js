@@ -94,11 +94,23 @@ exports.setHasVerificationBeenAttempted = function (hasVerificationBeenAttempted
         hasVerificationBeenAttempted: hasVerificationBeenAttempted,
     },
 }); };
+exports.updateRequestSent = function () { return ({
+    type: types_1.UPDATE_REQUEST_SENT,
+}); };
+exports.updateRequestSucceeded = function (userAttributes) { return ({
+    type: types_1.UPDATE_REQUEST_SUCCEEDED,
+    payload: {
+        userAttributes: userAttributes,
+    },
+}); };
+exports.updateRequestFailed = function () { return ({
+    type: types_1.UPDATE_REQUEST_FAILED,
+}); };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Async Redux Thunk actions:
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var generateAuthActions = function (config) {
-    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes, _a = config.userSignInAttributes, userSignInAttributes = _a === void 0 ? {} : _a;
+    var authUrl = config.authUrl, storage = config.storage, userAttributes = config.userAttributes, userRegistrationAttributes = config.userRegistrationAttributes, _a = config.userSignInAttributes, userSignInAttributes = _a === void 0 ? {} : _a, _b = config.userUpdateAttributes, userUpdateAttributes = _b === void 0 ? {} : _b;
     var Storage = Boolean(storage.flushGetRequests) ? storage : AsyncLocalStorage_1.default;
     var registerUser = function (userRegistrationDetails) { return function (dispatch) {
         return __awaiter(this, void 0, void 0, function () {
@@ -282,12 +294,53 @@ var generateAuthActions = function (config) {
             }
         });
     }); };
+    var updateUser = function (userUpdateDetails) { return function (dispatch) {
+        return __awaiter(this, void 0, void 0, function () {
+            var email, password, data, response, userAttributesToSave, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dispatch(exports.updateRequestSent());
+                        email = userUpdateDetails.email, password = userUpdateDetails.password;
+                        data = {
+                            email: email,
+                            password: password,
+                        };
+                        Object.keys(userUpdateAttributes).forEach(function (key) {
+                            var backendKey = userUpdateAttributes[key];
+                            data[backendKey] = userUpdateDetails[key];
+                        });
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, axios_1.default({
+                                method: 'PUT',
+                                url: authUrl,
+                                data: data,
+                            })];
+                    case 2:
+                        response = _a.sent();
+                        auth_1.setAuthHeaders(Storage, response.headers);
+                        auth_1.persistAuthHeadersInDeviceStorage(Storage, response.headers);
+                        userAttributesToSave = auth_1.getUserAttributesFromResponse(userAttributes, response);
+                        dispatch(exports.updateRequestSucceeded(userAttributesToSave));
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_5 = _a.sent();
+                        dispatch(exports.updateRequestFailed());
+                        throw error_5;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    }; };
     return {
         registerUser: registerUser,
         verifyToken: verifyToken,
         signInUser: signInUser,
         signOutUser: signOutUser,
         verifyCredentials: verifyCredentials,
+        updateUser: updateUser,
     };
 };
 exports.default = generateAuthActions;
