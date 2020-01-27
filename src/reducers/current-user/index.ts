@@ -61,7 +61,6 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
       }
     case REGISTRATION_REQUEST_FAILED:
     case SIGNIN_REQUEST_FAILED:
-    case UPDATE_REQUEST_FAILED:
       return {
         ...state,
         isLoading: false,
@@ -94,6 +93,8 @@ const currentUser = (state: User = initialUser, action: ReduxAction): User => {
         ...state,
         hasVerificationBeenAttempted: action.payload.hasVerificationBeenAttempted,
       }
+    case UPDATE_REQUEST_FAILED:
+      return state;
     case UPDATE_REQUEST_SUCCEEDED:
       return {
         ...state,
